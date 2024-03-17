@@ -49,8 +49,35 @@ function getTime(date) {
  * '03 Dec 1995 00:12:00 UTC' => 'Sunday'
  * '2024-01-30T00:00:00.000Z' => 'Tuesday'
  */
-function getDayName(/* date */) {
-  throw new Error('Not implemented');
+function getDayName(date) {
+  const day = new Date(Date.parse(date)).getUTCDay();
+  let daysName;
+  switch (day) {
+    case 0:
+      daysName = 'Sunday';
+      break;
+    case 1:
+      daysName = 'Monday';
+      break;
+    case 2:
+      daysName = 'Tuesday';
+      break;
+    case 3:
+      daysName = 'Wensday';
+      break;
+    case 4:
+      daysName = 'Thursday';
+      break;
+    case 5:
+      daysName = 'Friday';
+      break;
+    case 6:
+      daysName = 'Saturday';
+      break;
+    default:
+      daysName = 'Нет таких значений';
+  }
+  return daysName;
 }
 
 /**
