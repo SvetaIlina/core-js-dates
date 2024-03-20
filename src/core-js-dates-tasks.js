@@ -120,7 +120,7 @@ function getCountDaysInMonth(month, year) {
   const currentMonth = new Date(year, month - 1, 1);
   const nextMonth = new Date(year, month, 1);
   const different = nextMonth - currentMonth;
-  return different / 1000 / 3600 / 24;
+  return Math.ceil(different / 1000 / 3600 / 24);
 }
 
 /**
