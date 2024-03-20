@@ -324,26 +324,29 @@ function getQuarter(date) {
 function getWorkSchedule(period, countWorkDays, countOffDays) {
   const workDays = [];
   const startDate = new Date(period.start.split('-').reverse().join('-'));
-  let startDay = startDate.getUTCDate();
-  const startMonth = startDate.getUTCMonth();
-  const startYear = startDate.getUTCFullYear();
   const endDate = new Date(period.end.split('-').reverse().join('-'));
+
   const totalWorkDay = (endDate - startDate) / 1000 / 3600 / 24 + 1;
   const workCycle = countWorkDays + countOffDays;
   const cycleInPeriod = Math.ceil(totalWorkDay / workCycle);
+  let currentDay = startDate;
 
   for (let i = 0; i < cycleInPeriod; i += 1) {
-    let currentPeriodStart = startDay;
     for (let j = 0; j < countWorkDays; j += 1) {
-      const workDay = new Date(startYear, startMonth, currentPeriodStart);
-      const timeZoneOffset = workDay.getTimezoneOffset() * 60 * 1000;
-
-      if (workDay.getTime() <= endDate.getTime() + timeZoneOffset) {
-        workDays.push(workDay.toLocaleDateString().split('.').join('-'));
+      if (currentDay <= endDate) {
+        workDays.push(
+          currentDay
+            .toLocaleDateString('ru', { timeZone: 'UTC' })
+            .split('.')
+            .join('-')
+        );
       }
-      currentPeriodStart += 1;
+
+      currentDay = new Date(currentDay.setDate(currentDay.getDate() + 1));
     }
-    startDay += workCycle;
+    currentDay = new Date(
+      currentDay.setDate(currentDay.getDate() + countOffDays)
+    );
   }
 
   return workDays;
