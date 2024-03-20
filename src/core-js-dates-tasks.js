@@ -338,10 +338,9 @@ function getWorkSchedule(period, countWorkDays, countOffDays) {
   for (let i = 0; i < cycleInPeriod; i += 1) {
     let currentPeriodStart = startDay;
     for (let j = 0; j < countWorkDays; j += 1) {
-      const workDay = new Date(
-        Date.UTC(startYear, startMonth, currentPeriodStart)
-      );
-      if (workDay.getTime() <= endDate.getTime()) {
+      const workDay = new Date(startYear, startMonth, currentPeriodStart);
+      const timeZoneOffset = workDay.getTimezoneOffset() * 60 * 1000;
+      if (workDay.getTime() <= endDate.getTime() + timeZoneOffset) {
         workDays.push(workDay.toLocaleDateString().split('.').join('-'));
       }
       currentPeriodStart += 1;
