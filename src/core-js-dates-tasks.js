@@ -101,7 +101,7 @@ function getNextFriday(date) {
   }
 
   const newDay = date.getUTCDate() + differents;
-  date.setDate(newDay);
+  date.setUTCDate(newDay);
   return date;
 }
 
@@ -202,7 +202,7 @@ function getCountWeekendsInMonth(month, year) {
   let saturday = 0;
   let sunday = 0;
   for (let i = 1; i <= dayInMonth; i += 1) {
-    const day = new Date(Date.UTC(year, month - 1, i)).getDay();
+    const day = new Date(year, month - 1, i).getDay();
     if (day === 0) {
       sunday += 1;
     }
