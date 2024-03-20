@@ -324,8 +324,32 @@ function getQuarter(date) {
  * { start: '01-01-2024', end: '15-01-2024' }, 1, 3 => ['01-01-2024', '05-01-2024', '09-01-2024', '13-01-2024']
  * { start: '01-01-2024', end: '10-01-2024' }, 1, 1 => ['01-01-2024', '03-01-2024', '05-01-2024', '07-01-2024', '09-01-2024']
  */
-function getWorkSchedule(/* period, countWorkDays, countOffDays */) {
-  throw new Error('Not implemented');
+function getWorkSchedule(period, countWorkDays, countOffDays) {
+  const workDays = [];
+  const startDate = new Date(period.start.split('-').reverse().join('-'));
+  let startDay = startDate.getUTCDate();
+  const startMonth = startDate.getUTCMonth();
+  const startYear = startDate.getUTCFullYear();
+  const endDate = new Date(period.end.split('-').reverse().join('-'));
+  const totalWorkDay = (endDate - startDate) / 1000 / 3600 / 24 + 1;
+  const workCycle = countWorkDays + countOffDays;
+  const cycleInPeriod = Math.ceil(totalWorkDay / workCycle);
+
+  for (let i = 0; i < cycleInPeriod; i += 1) {
+    let currentPeriodStart = startDay;
+    for (let j = 0; j < countWorkDays; j += 1) {
+      const workDay = new Date(
+        Date.UTC(startYear, startMonth, currentPeriodStart)
+      );
+      if (workDay.getTime() <= endDate.getTime()) {
+        workDays.push(workDay.toLocaleDateString().split('.').join('-'));
+      }
+      currentPeriodStart += 1;
+    }
+    startDay += workCycle;
+  }
+
+  return workDays;
 }
 
 /**
