@@ -117,10 +117,7 @@ function getNextFriday(date) {
  * 2, 2024 => 29
  */
 function getCountDaysInMonth(month, year) {
-  const currentMonth = new Date(year, month - 1, 1);
-  const nextMonth = new Date(year, month, 1);
-  const different = nextMonth - currentMonth;
-  return Math.ceil(different / 1000 / 3600 / 24);
+  return new Date(year, month, 0).getDate();
 }
 
 /**
@@ -340,6 +337,7 @@ function getWorkSchedule(period, countWorkDays, countOffDays) {
     for (let j = 0; j < countWorkDays; j += 1) {
       const workDay = new Date(startYear, startMonth, currentPeriodStart);
       const timeZoneOffset = workDay.getTimezoneOffset() * 60 * 1000;
+      console.log(timeZoneOffset);
       if (workDay.getTime() <= endDate.getTime() + timeZoneOffset) {
         workDays.push(workDay.toLocaleDateString().split('.').join('-'));
       }
@@ -350,6 +348,7 @@ function getWorkSchedule(period, countWorkDays, countOffDays) {
 
   return workDays;
 }
+getWorkSchedule({ start: '01-01-2024', end: '31-03-2024' }, 3, 2);
 
 /**
  * Determines whether the year in the provided date is a leap year.
